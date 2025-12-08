@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>SocialMind AI – Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --blue-deep: #0A1F44;
+      --blue-darker: #050B1E;
+      --turquoise: #14C2C9;
+      --white: #FFFFFF;
+      --grey-light: #F3F4F6;
+      --grey-soft: #9CA3AF;
+      --card-bg: #020617;
+      --border-soft: rgba(148, 163, 184, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #0F172A, #020617 55%);
+      color: var(--white);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .layout {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar {
+      width: 240px;
+      background: radial-gradient(circle at top, #0B1120, #020617 60%);
+      border-right: 1px solid rgba(15, 23, 42, 0.9);
+      padding: 1.25rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .side-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .side-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 2px solid var(--turquoise);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .side-mark-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--turquoise);
+    }
+
+    .side-logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .side-logo-text span:first-child {
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .side-logo-text span:last-child {
+      font-size: 0.7rem;
+      color: var(--grey-soft);
+    }
+
+    .side-section-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--grey-soft);
+      margin-bottom: 0.4rem;
+    }
+
+    .side-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .side-link {
+      padding: 0.45rem 0.6rem;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: var(--grey-soft);
+      cursor: pointer;
+    }
+
+    .side-link-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.7);
+    }
+
+    .side-link.active {
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--white);
+    }
+
+    .side-link.active .side-link-dot {
+      background: var(--turquoise);
+    }
+
+    .side-footer {
+      margin-top: auto;
+      font-size: 0.7rem;
+      color: var(--grey-soft);
+    }
+
+    .side-footer a {
+      color: var(--turquoise);
+      font-weight: 500;
+    }
+
+    /* MAIN AREA */
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at top, #0B1120, #020617 65%);
+    }
+
+    /* TOPBAR */
+
+    .topbar {
+      padding: 0.9rem 1.5rem;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .top-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .top-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .top-title span.tag {
+      font-size: 0.7rem;
+      padding: 0.05rem 0.4rem;
+      border-radius: 999px;
+      background: rgba(20, 194, 201, 0.12);
+      color: var(--turquoise);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .top-subtitle {
+      font-size: 0.78rem;
+      color: var(--grey-soft);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .btn-outline {
+      border-radius: 999px;
+      padding: 0.5rem 0.9rem;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: transparent;
+      font-size: 0.8rem;
+      color: var(--grey-light);
+      cursor: pointer;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--turquoise);
+      color: var(--turquoise);
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      padding: 0.5rem 1.1rem;
+      border: none;
+      background: var(--turquoise);
+      color: var(--blue-deep);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+
+    .user-chip {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 0.3rem 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      color: var(--grey-soft);
+    }
+
+    .user-avatar {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--turquoise), #3B82F6);
+    }
+
+    /* MAIN CONTENT */
+
+    .content {
+      padding: 1.25rem 1.5rem 1.5rem;
+      display: grid;
+      grid-template-columns: 1.7fr 1.3fr;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+
+    .panel {
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 1rem;
+      border: 1px solid var(--border-soft);
+      padding: 1rem;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.7rem;
+      gap: 0.5rem;
+    }
+
+    .panel-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .panel-sub {
+      font-size: 0.75rem;
+      color: var(--grey-soft);
+    }
+
+    .panel-badge {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: var(--grey-soft);
+    }
+
+    /* PROJECTS TABLE */
+
+    .projects-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+      font-size: 0.78rem;
+      color: var(--grey-soft);
+    }
+
+    .projects-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    .projects-table thead {
+      color: var(--grey-soft);
+    }
+
+    .projects-table th,
+    .projects-table td {
+      padding: 0.5rem 0.3rem;
+      text-align: left;
+    }
+
+    .projects-table tbody tr {
+      border-top: 1px solid rgba(15, 23, 42, 0.9);
+    }
+
+    .projects-table tbody tr:hover {
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .status-pill {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+    }
+
+    .status-active {
+      background: rgba(20, 194, 201, 0.15);
+      color: var(--turquoise);
+    }
+
+    .status-draft {
+      background: rgba(148, 163, 184, 0.2);
+      color: var(--grey-soft);
+    }
+
+    .status-review {
+      background: rgba(59, 130, 246, 0.18);
+      color: #93C5FD;
+    }
+
+    .tag-mini {
+      font-size: 0.7rem;
+      color: var(--grey-soft);
+    }
+
+    /* CORE ENGINE PANEL */
+
+    .core-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1.1fr;
+      gap: 0.7rem;
+    }
+
+    .core-visual {
+      position: relative;
+      border-radius: 0.75rem;
+      background: radial-gradient(circle at top, rgba(20, 194, 201, 0.28), transparent 60%),
+                  #020617;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      padding: 0.75rem;
+    }
+
+    .core-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--grey-soft);
+      margin-bottom: 0.4rem;
+    }
+
+    .core-node-dashboard {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      margin: 0.4rem auto 0.5rem;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .core-node-center {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      text-align: center;
+      padding: 0 0.2rem;
+    }
+
+    .core-assistant-dot {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.55rem;
+      color: var(--turquoise);
+    }
+
+    .core-assistant-dot::before {
+      content: "";
+      position: absolute;
+      width: 1px;
+      height: 26px;
+      background: rgba(148, 163, 184, 0.9);
+      top: 50%;
+      left: 50%;
+      transform-origin: top;
+    }
+
+    .core-assistant-dot[data-pos="top"] {
+      top: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .core-assistant-dot[data-pos="top"]::before {
+      transform: translate(-50%, 0) rotate(180deg);
+    }
+
+    .core-assistant-dot[data-pos="bottom"] {
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .core-assistant-dot[data-pos="bottom"]::before {
+      transform: translate(-50%, -100%) rotate(0deg);
+    }
+
+    .core-assistant-dot[data-pos="left"] {
+      left: -2px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .core-assistant-dot[data-pos="left"]::before {
+      height: 30px;
+      transform: translate(-10px, -50%) rotate(90deg);
+    }
+
+    .core-assistant-dot[data-pos="right"] {
+      right: -2px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .core-assistant-dot[data-pos="right"]::before {
+      height: 30px;
+      transform: translate(-90%, -50%) rotate(90deg);
+    }
+
+    .core-assistant-dot[data-pos="tleft"] {
+      top: 10px;
+      left: 14px;
+    }
+    .core-assistant-dot[data-pos="tleft"]::before {
+      transform: translate(-50%, 0) rotate(140deg);
+      height: 28px;
+    }
+
+    .core-assistant-dot[data-pos="tright"] {
+      top: 10px;
+      right: 14px;
+    }
+    .core-assistant-dot[data-pos="tright"]::before {
+      transform: translate(-50%, 0) rotate(220deg);
+      height: 28px;
+    }
+
+    .core-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 0.5rem;
+      font-size: 0.7rem;
+      color: var(--grey-soft);
+      justify-content: center;
+    }
+
+    .core-legend span::before {
+      content: "●";
+      color: var(--turquoise);
+      font-size: 0.6rem;
+      margin-right: 0.2rem;
+    }
+
+    .core-text {
+      font-size: 0.75rem;
+      color: var(--grey-soft);
+      margin-top: 0.4rem;
+    }
+
+    .core-text strong {
+      color: var(--white);
+    }
+
+    /* ACTIVITY */
+
+    .activity-list {
+      font-size: 0.78rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .activity-item {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .activity-dot {
+      width: 18px;
+      margin-top: 0.2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .activity-dot span {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.9);
+    }
+
+    .activity-content span.label {
+      font-size: 0.7rem;
+      color: var(--grey-soft);
+    }
+
+    .activity-content p {
+      font-size: 0.78rem;
+    }
+
+    /* RIGHT COLUMN PANELS */
+
+    .assistants-status {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.5rem;
+      font-size: 0.76rem;
+    }
+
+    .assist-card {
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 0.75rem;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      padding: 0.6rem 0.7rem;
+    }
+
+    .assist-name {
+      font-size: 0.8rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .assist-role {
+      font-size: 0.7rem;
+      color: var(--grey-soft);
+      margin-bottom: 0.3rem;
+    }
+
+    .assist-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(--grey-soft);
+    }
+
+    .assist-status-active {
+      font-size: 0.7rem;
+      color: var(--turquoise);
+    }
+
+    .assist-status-idle {
+      font-size: 0.7rem;
+      color: rgba(148, 163, 184, 0.9);
+    }
+
+    .mini-link {
+      font-size: 0.7rem;
+      color: var(--turquoise);
+      cursor: pointer;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 980px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 780px) {
+      .sidebar {
+        display: none;
+      }
+
+      .content {
+        padding-inline: 1rem;
+      }
+
+      .topbar {
+        padding-inline: 1rem;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div>
+        <div class="side-logo">
+          <div class="side-mark">
+            <div class="side-mark-dot"></div>
+          </div>
+          <div class="side-logo-text">
+            <span>SOCIALMIND</span>
+            <span>Core workspace</span>
+          </div>
+        </div>
+        <div>
+          <div class="side-section-title">Navigation</div>
+          <div class="side-nav">
+            <a href="dashboard.html" class="side-link active">
+              <div class="side-link-dot"></div>
+              <span>Dashboard</span>
+            </a>
+            <a href="#" class="side-link">
+              <div class="side-link-dot"></div>
+              <span>Projets</span>
+            </a>
+            <a href="#" class="side-link">
+              <div class="side-link-dot"></div>
+              <span>Assistants</span>
+            </a>
+            <a href="#" class="side-link">
+              <div class="side-link-dot"></div>
+              <span>Automations</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="side-section-title">Projet actuel</div>
+        <div class="side-nav">
+          <div class="side-link" style="cursor: default;">
+            <div class="side-link-dot" style="background: var(--turquoise);"></div>
+            <span>SocialMind AI – v0.1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-footer">
+        <div>Retour au site</div>
+        <div>
+          <a href="index.html">← Landing SocialMind AI</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+      <!-- TOPBAR -->
+      <div class="topbar">
+        <div class="top-title-wrap">
+          <div class="top-title">
+            Espace de pilotage – SocialMind AI
+            <span class="tag">MVP concept</span>
+          </div>
+          <div class="top-subtitle">
+            Vue simplifiée du futur SaaS : projets, assistants, Core Engine et activité.
+          </div>
+        </div>
+        <div class="top-actions">
+          <button class="btn-outline">Créer un projet</button>
+          <button class="btn-primary">Nouvelle session IA</button>
+          <div class="user-chip">
+            <div class="user-avatar"></div>
+            <span>Romson • Beta</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="content">
+        <!-- LEFT COLUMN -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Projets récents</div>
+              <div class="panel-sub">Les derniers espaces gérés par SocialMind.</div>
+            </div>
+            <span class="panel-badge">Vue résumé</span>
+          </div>
+
+          <div class="projects-header">
+            <span>3 projets actifs</span>
+            <span class="mini-link">Voir tous les projets</span>
+          </div>
+
+          <table class="projects-table">
+            <thead>
+              <tr>
+                <th>Projet</th>
+                <th>Type</th>
+                <th>Statut</th>
+                <th>Dernière activité</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  SocialMind AI – Lancement
+                  <div class="tag-mini">Stratégie + Brand + Pitch deck</div>
+                </td>
+                <td>Projet global</td>
+                <td><span class="status-pill status-active">En orchestration</span></td>
+                <td>Il y a 2 h</td>
+              </tr>
+              <tr>
+                <td>
+                  Stratégie LinkedIn – Romson
+                  <div class="tag-mini">30 jours de posts, carrousels, storytelling</div>
+                </td>
+                <td>Contenu</td>
+                <td><span class="status-pill status-review">À réviser</span></td>
+                <td>Il y a 1 j</td>
+              </tr>
+              <tr>
+                <td>
+                  Audit process – Onboarding clients
+                  <div class="tag-mini">Workflows + recommandations</div>
+                </td>
+                <td>Processus</td>
+                <td><span class="status-pill status-draft">Brouillon</span></td>
+                <td>Il y a 3 j</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top: 1rem;">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">Core Engine – Orchestration en cours</div>
+                <div class="panel-sub">
+                  Simulation du comportement multi-assistants sur le projet “SocialMind AI – Lancement”.
+                </div>
+              </div>
+            </div>
+            <div class="core-grid">
+              <div class="core-visual">
+                <div class="core-label">Carte des assistants</div>
+                <div class="core-node-dashboard">
+                  <div class="core-node-center">Brief utilisateur</div>
+                  <div class="core-assistant-dot" data-pos="top">Dir</div>
+                  <div class="core-assistant-dot" data-pos="bottom">Com</div>
+                  <div class="core-assistant-dot" data-pos="left">Des</div>
+                  <div class="core-assistant-dot" data-pos="right">Ana</div>
+                  <div class="core-assistant-dot" data-pos="tleft">Sec</div>
+                  <div class="core-assistant-dot" data-pos="tright">Auto</div>
+                </div>
+                <div class="core-legend">
+                  <span>Director</span>
+                  <span>Communicator</span>
+                  <span>Design</span>
+                  <span>Analyst</span>
+                  <span>LegalShield</span>
+                  <span>Automation</span>
+                </div>
+                <div class="core-text">
+                  <strong>Étape actuelle :</strong> Director structure le plan global, Communicator
+                  prépare les textes, Design propose la structure visuelle du pitch deck.
+                </div>
+              </div>
+              <div>
+                <div class="core-label">Activité récente</div>
+                <div class="activity-list">
+                  <div class="activity-item">
+                    <div class="activity-dot"><span></span></div>
+                    <div class="activity-content">
+                      <span class="label">Il y a 12 min</span>
+                      <p>
+                        <strong>Communicator</strong> a généré 3 variantes de tagline pour la landing page.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot"><span></span></div>
+                    <div class="activity-content">
+                      <span class="label">Il y a 40 min</span>
+                      <p>
+                        <strong>Design</strong> a proposé une structure de slides pour le pitch deck SocialMind.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot"><span></span></div>
+                    <div class="activity-content">
+                      <span class="label">Il y a 1 h</span>
+                      <p>
+                        <strong>Analyst</strong> a synthétisé le document de vision produit en 1 page.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot"><span></span></div>
+                    <div class="activity-content">
+                      <span class="label">Il y a 2 h</span>
+                      <p>
+                        <strong>LegalShield</strong> a marqué une section “à vérifier” concernant la gestion des données clients.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot"><span></span></div>
+                    <div class="activity-content">
+                      <span class="label">Il y a 3 h</span>
+                      <p>
+                        <strong>Automation</strong> a proposé une routine hebdomadaire pour résumer les projets actifs.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">État des assistants</div>
+              <div class="panel-sub">Vue rapide de l’équipe IA SocialMind.</div>
+            </div>
+            <span class="panel-badge">6 modules</span>
+          </div>
+
+          <div class="assistants-status">
+            <div class="assist-card">
+              <div class="assist-name">Director</div>
+              <div class="assist-role">Stratégie & structure</div>
+              <div class="assist-meta">
+                <span class="assist-status-active">Actif sur 2 projets</span>
+                <span class="mini-link">Détails</span>
+              </div>
+            </div>
+            <div class="assist-card">
+              <div class="assist-name">Communicator</div>
+              <div class="assist-role">Contenu & LinkedIn</div>
+              <div class="assist-meta">
+                <span class="assist-status-active">Rédaction en cours</span>
+                <span class="mini-link">Ouvrir</span>
+              </div>
+            </div>
+            <div class="assist-card">
+              <div class="assist-name">Design</div>
+              <div class="assist-role">Identité & visuels</div>
+              <div class="assist-meta">
+                <span class="assist-status-idle">En attente de brief</span>
+                <span class="mini-link">Briefer</span>
+              </div>
+            </div>
+            <div class="assist-card">
+              <div class="assist-name">Analyst</div>
+              <div class="assist-role">Analyse & synthèse</div>
+              <div class="assist-meta">
+                <span class="assist-status-active">1 analyse en cours</span>
+                <span class="mini-link">Voir</span>
+              </div>
+            </div>
+            <div class="assist-card">
+              <div class="assist-name">LegalShield</div>
+              <div class="assist-role">Sécurité & conformité</div>
+              <div class="assist-meta">
+                <span class="assist-status-idle">Aucune alerte</span>
+                <span class="mini-link">Historique</span>
+              </div>
+            </div>
+            <div class="assist-card">
+              <div class="assist-name">Automation</div>
+              <div class="assist-role">Workflows & routines</div>
+              <div class="assist-meta">
+                <span class="assist-status-idle">Suggestions prêtes</span>
+                <span class="mini-link">Consulter</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem;">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">Prochaine évolution</div>
+                <div class="panel-sub">
+                  Ce dashboard est un prototype. La prochaine étape est de le connecter à un vrai moteur IA.
+                </div>
+              </div>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--grey-soft);">
+              Objectif court terme : transformer cette interface en un MVP opérationnel (authentification,
+              création de projets, stockage des briefs et intégration IA).  
+              Tu peux déjà utiliser ce dashboard comme support visuel pour expliquer SocialMind AI
+              à un futur développeur associé ou à des partenaires.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
