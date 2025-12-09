@@ -21,6 +21,41 @@
       margin: 0;
       padding: 0;
     }
+  <script>
+  // Quand la page est chargée
+  document.addEventListener("DOMContentLoaded", function () {
+    const assistCards = document.querySelectorAll(".assist-card");
+    const detailsBox = document.getElementById("assistant-details");
+
+    assistCards.forEach((card) => {
+      card.addEventListener("click", () => 
+      {
+        // 1. Retirer l'état actif des autres cartes
+        assistCards.forEach((c) => c.classList.remove("assist-card-active"));
+
+        // 2. Activer la carte cliquée
+        card.classList.add("assist-card-active");
+
+        // 3. Récupérer les infos de la carte
+        const name = card.getAttribute("data-name");
+        const role = card.getAttribute("data-role");
+        const description = card.getAttribute("data-description");
+
+        // 4. Mettre à jour le bloc de détails
+        detailsBox.innerHTML = `
+         <strong>Assistant sélectionné :</strong>
+          <div style="margin-top: 0.35rem;"><span style="color: #FFFFFF; font-weight: 600;">${name}</span>
+            <span style="color: var(--grey-soft);"> • ${role}</span>
+          </div>
+          <div style="margin-top: 0.4rem;">
+            ${description}
+          </div>
+        `;
+      });
+    });
+  });
+</script>
+
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -564,6 +599,87 @@
       padding: 0.6rem 0.7rem;
     }
 
+    <div class="assistants-status">
+  <div class="assist-card"
+       data-name="Director"
+       data-role="Stratégie & structure"
+       data-description="Clarifie les objectifs, structure les projets, hiérarchise les priorités et construit des roadmaps actionnables.">
+    <div class="assist-name">Director</div>
+    <div class="assist-role">Stratégie & structure</div>
+    <div class="assist-meta">
+      <span class="assist-status-active">Actif sur 2 projets</span>
+      <span class="mini-link">Détails</span>
+    </div>
+  </div>
+
+  <div class="assist-card"
+       data-name="Communicator"
+       data-role="Contenu & LinkedIn"
+       data-description="Rédige des posts, scripts, carrousels et messages professionnels alignés à votre positionnement.">
+    <div class="assist-name">Communicator</div>
+    <div class="assist-role">Contenu & LinkedIn</div>
+    <div class="assist-meta">
+      <span class="assist-status-active">Rédaction en cours</span>
+      <span class="mini-link">Ouvrir</span>
+    </div>
+  </div>
+
+  <div class="assist-card"
+       data-name="Design"
+       data-role="Identité & visuels"
+       data-description="Propose des palettes, directions graphiques, structures de slides et maquettes d’interface.">
+    <div class="assist-name">Design</div>
+    <div class="assist-role">Identité & visuels</div>
+    <div class="assist-meta">
+      <span class="assist-status-idle">En attente de brief</span>
+      <span class="mini-link">Briefer</span>
+    </div>
+  </div>
+
+  <div class="assist-card"
+       data-name="Analyst"
+       data-role="Analyse & synthèse"
+       data-description="Résume, compare, structure et vérifie la cohérence des documents, choix et décisions.">
+    <div class="assist-name">Analyst</div>
+    <div class="assist-role">Analyse & synthèse</div>
+    <div class="assist-meta">
+      <span class="assist-status-active">1 analyse en cours</span>
+      <span class="mini-link">Voir</span>
+    </div>
+  </div>
+
+  <div class="assist-card"
+       data-name="LegalShield"
+       data-role="Sécurité & conformité"
+       data-description="Analyse les risques, marque les zones sensibles et vérifie la cohérence avec les règles de sécurité.">
+    <div class="assist-name">LegalShield</div>
+    <div class="assist-role">Sécurité & conformité</div>
+    <div class="assist-meta">
+      <span class="assist-status-idle">Aucune alerte</span>
+      <span class="mini-link">Historique</span>
+    </div>
+  </div>
+
+  <div class="assist-card"
+       data-name="Automation"
+       data-role="Workflows & routines"
+       data-description="Identifie les tâches répétitives, propose des routines et prépare les futures automatisations L4 → L5.">
+    <div class="assist-name">Automation</div>
+    <div class="assist-role">Workflows & routines</div>
+    <div class="assist-meta">
+      <span class="assist-status-idle">Suggestions prêtes</span>
+      <span class="mini-link">Consulter</span>
+    </div>
+  </div>
+</div>
+
+
+    .assist-card-active {
+  border-color: var(--turquoise);
+  box-shadow: 0 0 0 1px rgba(20, 194, 201, 0.5);
+}
+
+
     .assist-name {
       font-size: 0.8rem;
       margin-bottom: 0.15rem;
@@ -907,6 +1023,12 @@
             </div>
           </div>
 
+          <div id="assistant-details" style="margin-top: 0.9rem; font-size: 0.8rem; color: var(--grey-soft); border-top: 1px solid rgba(148, 163, 184, 0.35); padding-top: 0.6rem;">
+  <strong>Assistant sélectionné :</strong>
+  <div style="margin-top: 0.25rem;">
+    Cliquez sur un assistant dans la liste pour afficher son rôle et ce qu’il peut faire dans SocialMind AI.
+  </div>
+</div>
           <div style="margin-top: 1rem;">
             <div class="panel-header">
               <div>
