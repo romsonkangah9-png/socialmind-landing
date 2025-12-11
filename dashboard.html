@@ -5,6 +5,15 @@
   <title>SocialMind AI – Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
+
+    .project-row {
+  cursor: pointer;
+}
+
+.project-row-active {
+  background: rgba(15, 23, 42, 0.85);
+}
+
     :root {
       --blue-deep: #0A1F44;
       --blue-darker: #050B1E;
@@ -733,35 +742,41 @@
                 <th>Dernière activité</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>
-                  SocialMind AI – Lancement
-                  <div class="tag-mini">Stratégie + Brand + Pitch deck</div>
-                </td>
-                <td>Projet global</td>
-                <td><span class="status-pill status-active">En orchestration</span></td>
-                <td>Il y a 2 h</td>
-              </tr>
-              <tr>
-                <td>
-                  Stratégie LinkedIn – Romson
-                  <div class="tag-mini">30 jours de posts, carrousels, storytelling</div>
-                </td>
-                <td>Contenu</td>
-                <td><span class="status-pill status-review">À réviser</span></td>
-                <td>Il y a 1 j</td>
-              </tr>
-              <tr>
-                <td>
-                  Audit process – Onboarding clients
-                  <div class="tag-mini">Workflows + recommandations</div>
-                </td>
-                <td>Processus</td>
-                <td><span class="status-pill status-draft">Brouillon</span></td>
-                <td>Il y a 3 j</td>
-              </tr>
-            </tbody>
+        <tbody>
+          <tr class="project-row"
+              data-name="SocialMind AI – Lancement"
+              data-summary="Orchestration globale : vision, brand, pitch deck et landing page.">
+              <td>
+                SocialMind AI – Lancement
+                <div class="tag-mini">Stratégie + Brand + Pitch deck</div>
+              </td>
+              <td>Projet global</td>
+              <td><span class="status-pill status-active">En orchestration</span></td>
+              <td>Il y a 2 h</td>
+            </tr>
+            <tr class="project-row"
+            data-name="Stratégie LinkedIn – Romson"
+            data-summary="Focus contenu : 30 jours de posts, carrousels et leadership.">
+            <td>
+              Stratégie LinkedIn – Romson
+              <div class="tag-mini">30 jours de posts, carrousels, storytelling</div>
+            </td>
+            <td>Contenu</td>
+            <td><span class="status-pill status-review">À réviser</span></td>
+            <td>Il y a 1 j</td>
+          </tr>
+          <tr class="project-row"
+           data-name="Audit process – Onboarding clients"
+           data-summary="Optimisation des workflows d'onboarding et recommandations.">
+          <td> Audit process – Onboarding clients
+              <div class="tag-mini">Workflows + recommandations</div>
+          </td>
+            <td>Processus</td>
+            <td><span class="status-pill status-draft">Brouillon</span></td>
+          <td>Il y a 3 j</td>
+          </tr>
+        </tbody>
+
           </table>
 
           <div style="margin-top: 1rem;">
@@ -793,7 +808,7 @@
                   <span>LegalShield</span>
                   <span>Automation</span>
                 </div>
-                <div class="core-text">
+                <div class="core-text" id="core-text">
                   <strong>Étape actuelle :</strong> Director structure le plan global, Communicator
                   prépare les textes, Design propose la structure visuelle du pitch deck.
                 </div>
@@ -968,37 +983,64 @@
 
   <!-- SCRIPT D'INTERACTION ASSISTANTS -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const assistCards = document.querySelectorAll(".assist-card");
-      const detailsBox = document.getElementById("assistant-details");
+  document.addEventListener("DOMContentLoaded", function () {
+    // ====== INTERACTION ASSISTANTS ======
+    const assistCards = document.querySelectorAll(".assist-card");
+    const detailsBox = document.getElementById("assistant-details");
 
-      assistCards.forEach((card) => {
-        card.addEventListener("click", () => {
-          // Retirer l'état actif des autres cartes
-          assistCards.forEach((c) => c.classList.remove("assist-card-active"));
+    assistCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        // Retirer l'état actif des autres cartes
+        assistCards.forEach((c) => c.classList.remove("assist-card-active"));
 
-          // Activer la carte cliquée
-          card.classList.add("assist-card-active");
+        // Activer la carte cliquée
+        card.classList.add("assist-card-active");
 
-          // Récupérer les infos de la carte
-          const name = card.getAttribute("data-name");
-          const role = card.getAttribute("data-role");
-          const description = card.getAttribute("data-description");
+        // Récupérer les infos de la carte
+        const name = card.getAttribute("data-name");
+        const role = card.getAttribute("data-role");
+        const description = card.getAttribute("data-description");
 
-          // Mettre à jour la zone de détails
-          detailsBox.innerHTML = `
-            <strong>Assistant sélectionné :</strong>
-            <div style="margin-top: 0.35rem;">
-              <span style="color: #FFFFFF; font-weight: 600;">${name}</span>
-              <span style="color: var(--grey-soft);"> • ${role}</span>
-            </div>
-            <div style="margin-top: 0.4rem;">
-              ${description}
-            </div>
-          `;
-        });
+        // Mettre à jour la zone de détails
+        detailsBox.innerHTML = `
+          <strong>Assistant sélectionné :</strong>
+          <div style="margin-top: 0.35rem;">
+            <span style="color: #FFFFFF; font-weight: 600;">${name}</span>
+            <span style="color: var(--grey-soft);"> • ${role}</span>
+          </div>
+          <div style="margin-top: 0.4rem;">
+            ${description}
+          </div>
+        `;
       });
     });
-  </script>
+
+    // ====== INTERACTION PROJETS ======
+    const projectRows = document.querySelectorAll(".project-row");
+    const coreText = document.getElementById("core-text");
+
+    projectRows.forEach((row) => {
+      row.addEventListener("click", () => {
+        // Retirer l'état actif des autres projets
+        projectRows.forEach((r) => r.classList.remove("project-row-active"));
+
+        // Activer la ligne cliquée
+        row.classList.add("project-row-active");
+
+        // Récupérer les infos du projet
+        const projectName = row.getAttribute("data-name");
+        const projectSummary = row.getAttribute("data-summary");
+
+        // Mettre à jour le texte du Core Engine
+        coreText.innerHTML = `
+          <strong>Projet sélectionné :</strong> ${projectName}<br>
+          <span style="color: var(--grey-soft);">
+            Focus actuel : ${projectSummary}
+          </span>
+        `;
+      });
+    });
+  });
+</script>
 </body>
 </html>
